@@ -1,4 +1,4 @@
 export enum Status {
-  ON_SALE = 0,
-  SOLD_OUT = 1,
+  ON_SALE = 'ON_SALE',
+  SOLD_OUT = 'SOLD_OUT',
 }
