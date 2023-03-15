@@ -1,1 +1,5 @@
 */node_modules
+
+# postgres
+docker/pgadmin
+docker/postgres/pgdata
