@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  backend:
-    env_file: .env.local
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - 3000:3000
-    restart: always
-    volumes:
-      - ./backend:/app
-    tty: true
-    stdin_open: true
+  # backend:
+  #   env_file: .env.local
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - 3000:3000
+  #   restart: always
+  #   volumes:
+  #     - ./backend:/app
+  #   tty: true
+  #   stdin_open: true
 
   postgres:
     image: postgres:14.2-alpine

@@ -1,43 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Item } from './item.model';
-import { ItemStatus } from './item-status.enum';
 import { CreateItemDto } from './dto/create-item.dto';
-import { v4 as uuid } from 'uuid';
+import { ItemRepository } from './item.repository';
+import { Item } from 'src/entities/item.entity';
+
 @Injectable()
 export class ItemsService {
-  private items: Item[] = [];
-  // TODO: なんでこれが(constructor で変数を定義)ダメなのかは、もっと慣れてきたら調べる
-  // constructor(public items: Item) {}
+  constructor(private readonly itemRepository: ItemRepository) {}
 
-  findById(id: string): Item {
-    const item = this.items.find((item) => item.id === id);
+  async findById(id: string): Promise<Item> {
+    const item = await this.itemRepository.findOne(id);
     if (!item) throw new NotFoundException();
     return item;
   }
 
-  findAll(): Item[] {
-    return this.items;
+  async findAll(): Promise<Item[]> {
+    return await this.itemRepository.find();
   }
 
-  create(createItemDto: CreateItemDto): Item {
-    const item: Item = {
-      id: uuid(),
-      ...createItemDto,
-      status: ItemStatus.ON_SALE,
-    };
-
-    this.items.push(item);
+  async create(createItemDto: CreateItemDto): Promise<Item> {
+    const item = await this.itemRepository.createItem(createItemDto);
     return item;
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
-    item.status = ItemStatus.SOLD_OUT;
-
-    return item;
+  async updateStatus(id: string): Promise<Item> {
+    const item = await this.findById(id);
+    return await this.itemRepository.updateStatus(item);
   }
 
-  delete(id: string): void {
-    this.items = this.items.filter((item) => item.id !== id);
+  async delete(id: string): Promise<void> {
+    this.itemRepository.delete(id);
   }
 }
