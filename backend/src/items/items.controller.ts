@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from '../entities/item.entity';
@@ -17,6 +19,9 @@ import { GetUser } from 'src/auth/decorator/get-decorator';
 import { User } from 'src/entities/user.entity';
 
 @Controller('items')
+// ハンドラーの実行前後に、ロジックを追加できるもの。
+// この場面では、user.entity.ts で設定した、Exclude() のパスワードをレスポンスからはずすための記載
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}
   @Get()
