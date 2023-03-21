@@ -13,6 +13,8 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from '../entities/item.entity';
 import { ItemsService } from './items.service';
 import { JwtAuthGuard } from 'src/auth/Guards';
+import { GetUser } from 'src/auth/decorator/get-decorator';
+import { User } from 'src/entities/user.entity';
 
 @Controller('items')
 export class ItemsController {
@@ -29,8 +31,11 @@ export class ItemsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
-    return await this.itemService.create(createItemDto);
+  async create(
+    @Body() createItemDto: CreateItemDto,
+    @GetUser() user: User,
+  ): Promise<Item> {
+    return await this.itemService.create(createItemDto, user);
   }
 
   @Patch(':id')

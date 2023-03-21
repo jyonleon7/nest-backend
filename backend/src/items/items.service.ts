@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemRepository } from './item.repository';
 import { Item } from 'src/entities/item.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ItemsService {
@@ -17,8 +18,8 @@ export class ItemsService {
     return await this.itemRepository.find();
   }
 
-  async create(createItemDto: CreateItemDto): Promise<Item> {
-    const item = await this.itemRepository.createItem(createItemDto);
+  async create(createItemDto: CreateItemDto, user: User): Promise<Item> {
+    const item = await this.itemRepository.createItem(createItemDto, user);
     return item;
   }
 
