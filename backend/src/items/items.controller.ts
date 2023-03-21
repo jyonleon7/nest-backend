@@ -31,7 +31,7 @@ export class ItemsController {
 
   @Get(':id')
   async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-    return this.itemService.findById(id);
+    return await this.itemService.findById(id);
   }
 
   @Post()
@@ -45,13 +45,19 @@ export class ItemsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-    return this.itemService.updateStatus(id);
+  async updateStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User,
+  ): Promise<Item> {
+    return await this.itemService.updateStatus(id, user);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    this.itemService.delete(id);
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    await this.itemService.delete(id, user);
   }
 }
